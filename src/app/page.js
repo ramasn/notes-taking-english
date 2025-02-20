@@ -1,12 +1,6 @@
 import VocabularyList from "./components/VocabularyList";
 import AddVocabularyForm from "./components/AddVocabularyForm";
 
-if (process.env.MONGODB_URI) {
-  console.log("MONGODB_URI is defined");
-} else {
-  console.log("MONGODB_URI is not defined");
-}
-
 export default function Home() {
   return (
     <main className="container mx-auto px-4 py-8">

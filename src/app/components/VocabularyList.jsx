@@ -16,7 +16,11 @@ export default async function VocabularyList() {
             <p className="text-gray-600">{item.definition}</p>
             <p className="text-sm text-gray-500 mt-2">
               Kita Belajar ini tanggal:{" "}
-              {new Date(item.dateAdded).toLocaleDateString()}
+              {new Date(item.dateAdded).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </p>
           </li>
         ))}

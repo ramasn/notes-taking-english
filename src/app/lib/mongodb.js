@@ -1,58 +1,37 @@
 import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
-  );
+if (!process.env.MONGODB_URI) {
+  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
 }
 
-const options = {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  ssl: true,
-  sslValidate: true,
-};
+const uri = process.env.MONGODB_URI;
+const options = {};
 
 let client;
 let clientPromise;
 
 if (process.env.NODE_ENV === "development") {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global._mongoClientPromise) {
-    client = new MongoClient(MONGODB_URI, options);
-    global._mongoClientPromise = client.connect().catch((err) => {
-      console.error("Failed to connect to MongoDB", err);
-      throw err;
-    });
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
   }
   clientPromise = global._mongoClientPromise;
 } else {
-  client = new MongoClient(MONGODB_URI, options);
-  clientPromise = client.connect().catch((err) => {
-    console.error("Failed to connect to MongoDB", err);
-    throw err;
-  });
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
 }
 
 export async function getVocabularyItems() {
-  try {
-    const client = await clientPromise;
-    const collection = client.db().collection("words");
-    return collection.find({}).sort({ dateAdded: -1 }).toArray();
-  } catch (error) {
-    console.error("Failed to fetch vocabulary items:", error);
-    return [];
-  }
+  const client = await clientPromise;
+  const collection = client.db("vocabulary").collection("words");
+  return collection.find({}).sort({ dateAdded: -1 }).toArray();
 }
 
 export async function addVocabularyItem(word, definition) {
-  try {
-    const client = await clientPromise;
-    const collection = client.db().collection("words");
-    return collection.insertOne({ word, definition, dateAdded: new Date() });
-  } catch (error) {
-    console.error("Failed to add vocabulary item:", error);
-    throw error;
-  }
+  const client = await clientPromise;
+  const collection = client.db("vocabulary").collection("words");
+  return collection.insertOne({ word, definition, dateAdded: new Date() });
 }

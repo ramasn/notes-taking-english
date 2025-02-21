@@ -48,14 +48,9 @@ export default function AddVocabularyForm() {
             value={word}
             onChange={(e) => setWord(e.target.value)}
             required
+            placeholder="Kata"
             className="peer block w-full px-4 py-3 text-lg text-gray-900 bg-transparent border-2 border-gray-400 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 outline-none transition-all"
           />
-          <label
-            htmlFor="word"
-            className="absolute top-3 left-4 text-gray-500 peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-500 transition-all"
-          >
-            Kata
-          </label>
         </div>
 
         {/* Definition Input */}
@@ -65,15 +60,10 @@ export default function AddVocabularyForm() {
             value={definition}
             onChange={(e) => setDefinition(e.target.value)}
             required
+            placeholder="Artinya"
             rows={3}
             className="peer block w-full px-4 py-3 text-lg text-gray-900 bg-transparent border-2 border-gray-400 rounded-md focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 outline-none transition-all"
           ></textarea>
-          <label
-            htmlFor="definition"
-            className="absolute top-3 left-4 text-gray-500 peer-placeholder-shown:top-3 peer-placeholder-shown:text-lg peer-placeholder-shown:text-gray-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-500 transition-all"
-          >
-            Artinya
-          </label>
         </div>
 
         {/* Submit Button */}

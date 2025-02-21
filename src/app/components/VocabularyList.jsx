@@ -1,7 +1,12 @@
-import { getVocabularyItems } from "../lib/mongodb";
-
 export default async function VocabularyList() {
-  const vocabularyItems = await getVocabularyItems();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/vocabulary`,
+    {
+      cache: "no-store", // Ensures fresh data on every request
+    }
+  );
+
+  const vocabularyItems = await res.json();
 
   return (
     <div>

@@ -7,8 +7,10 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-8 text-center">
         My Vocabulary Notes
       </h1>
-      <div className="grid md:grid-cols-2 gap-8">
-        <AddVocabularyForm />
+      <div className="grid md:grid-cols-2 gap-8 justify-center">
+        <div className="max-w-sm">
+          <AddVocabularyForm />
+        </div>
         <VocabularyList />
       </div>
     </main>

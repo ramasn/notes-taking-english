@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="container mx-auto px-4 py-8 bg-gradient-to-br from-blue-900 to-purple-950">
+    <main className="min-h-screen px-4 py-8 bg-gradient-to-br from-blue-900 to-purple-950">
       <h1 className="text-3xl font-bold mb-6 text-center">
         My Vocabulary Notes
       </h1>
@@ -14,7 +14,7 @@ export default function Home() {
           href="/quiz"
           className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition"
         >
-          Take a Quiz
+          Kuis Kosakata
         </Link>
       </div>
 

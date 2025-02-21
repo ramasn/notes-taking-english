@@ -59,7 +59,7 @@ export default function QuizPage() {
       ) : (
         <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md text-center">
           <h1 className="text-3xl font-bold mb-6 text-gray-800">
-            Vocabulary Quiz
+            Kuis Vocabulary
           </h1>
 
           {currentQuestion && (
@@ -113,7 +113,7 @@ export default function QuizPage() {
               onClick={() => setNavigating(true)}
               className="mt-6 px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600 transition-all duration-300"
             >
-              {navigating ? "Loading..." : "Back to home"}
+              {navigating ? "Loading..." : "Kembali ke Home"}
             </button>
           </Link>
         </div>

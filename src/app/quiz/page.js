@@ -7,8 +7,19 @@ async function getVocabularyItems() {
   return response.json();
 }
 
+// Function to shuffle an array using Fisher-Yates algorithm
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 export default function QuizPage() {
   const [vocabularyItems, setVocabularyItems] = useState([]);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -19,19 +30,27 @@ export default function QuizPage() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const items = await getVocabularyItems();
+      let items = await getVocabularyItems();
+      items = shuffleArray(items); // Shuffle once at the start
       setVocabularyItems(items);
-      generateQuestion(items);
+      setQuestionIndex(0);
+      generateQuestion(items, 0);
       setLoading(false);
     }
     fetchData();
   }, []);
 
-  function generateQuestion(items) {
+  function generateQuestion(items, index) {
     if (items.length === 0) return;
 
-    const randomIndex = Math.floor(Math.random() * items.length);
-    const questionWord = items[randomIndex];
+    // Reset index and reshuffle if all words have been asked
+    if (index >= items.length) {
+      const reshuffledItems = shuffleArray(items);
+      setVocabularyItems(reshuffledItems);
+      index = 0;
+    }
+
+    const questionWord = items[index];
     let optionsSet = new Set();
 
     optionsSet.add(questionWord.definition);
@@ -45,11 +64,16 @@ export default function QuizPage() {
     setOptions([...optionsSet].sort(() => Math.random() - 0.5));
     setSelectedAnswer(null);
     setIsCorrect(null);
+    setQuestionIndex(index);
   }
 
   function handleAnswerClick(option) {
     setSelectedAnswer(option);
     setIsCorrect(option === currentQuestion.definition);
+  }
+
+  function nextQuestion() {
+    generateQuestion(vocabularyItems, questionIndex + 1);
   }
 
   return (
@@ -101,7 +125,7 @@ export default function QuizPage() {
                 </p>
               )}
               <button
-                onClick={() => generateQuestion(vocabularyItems)}
+                onClick={nextQuestion}
                 className="mt-6 px-6 py-3 bg-blue-500 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300"
               >
                 Pertanyaan Selanjutnya

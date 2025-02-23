@@ -11,12 +11,15 @@ export default function VocabularyList({ refreshTrigger }) {
   const [vocabularyItems, setVocabularyItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredItems, setFilteredItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       const items = await getVocabularyItems();
       setVocabularyItems(items);
       setFilteredItems(items);
+      setLoading(false);
     }
     fetchData();
   }, [refreshTrigger]);
@@ -50,25 +53,32 @@ export default function VocabularyList({ refreshTrigger }) {
           </button>
         )}
       </div>
-      <ul className="space-y-4 mt-4">
-        {filteredItems.map((item) => (
-          <li
-            key={item._id.toString()}
-            className="bg-white shadow rounded-lg p-4 text-green-500"
-          >
-            <h3 className="text-xl font-semibold">{item.word}</h3>
-            <p className="text-gray-600">{item.definition}</p>
-            <p className="text-sm text-gray-500 mt-2">
-              Kita Belajar ini tanggal:{" "}
-              {new Date(item.dateAdded).toLocaleDateString("id-ID", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          </li>
-        ))}
-      </ul>
+
+      {loading ? (
+        <div className="flex justify-center items-center mt-6">
+          <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-green-500"></div>
+        </div>
+      ) : (
+        <ul className="space-y-4 mt-4">
+          {filteredItems.map((item) => (
+            <li
+              key={item._id.toString()}
+              className="bg-white shadow rounded-lg p-4 text-green-500"
+            >
+              <h3 className="text-xl font-semibold">{item.word}</h3>
+              <p className="text-gray-600">{item.definition}</p>
+              <p className="text-sm text-gray-500 mt-2">
+                Kita Belajar ini tanggal:{" "}
+                {new Date(item.dateAdded).toLocaleDateString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

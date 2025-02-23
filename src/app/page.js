@@ -1,8 +1,11 @@
+"use client";
 import VocabularyList from "./components/VocabularyList";
 import AddVocabularyForm from "./components/AddVocabularyForm";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   return (
     <main className="min-h-screen px-4 py-8 bg-gradient-to-br from-blue-900 to-purple-950">
       <h1 className="text-3xl font-bold mb-6 text-center">
@@ -20,10 +23,12 @@ export default function Home() {
 
       <div className="grid md:grid-cols-2 gap-8 items-start">
         <div className="w-full">
-          <AddVocabularyForm />
+          <AddVocabularyForm
+            onVocabularyAdded={() => setRefreshTrigger((prev) => prev + 1)}
+          />
         </div>
         <div className="w-full">
-          <VocabularyList />
+          <VocabularyList refreshTrigger={refreshTrigger} />
         </div>
       </div>
     </main>

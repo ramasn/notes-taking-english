@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaPlusCircle, FaBook } from "react-icons/fa";
 
-export default function AddVocabularyForm() {
+export default function AddVocabularyForm({ onVocabularyAdded }) {
   const [word, setWord] = useState("");
   const [definition, setDefinition] = useState("");
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function AddVocabularyForm() {
     if (response.ok) {
       setWord("");
       setDefinition("");
-      router.refresh();
+      onVocabularyAdded(); // Notify VocabularyList to refresh
     }
   };
 
@@ -32,7 +32,6 @@ export default function AddVocabularyForm() {
         onSubmit={handleSubmit}
         className=" bg-white shadow-lg rounded-xl p-6 transition-all duration-300"
       >
-        {/* Title */}
         <div className="flex items-center mb-6">
           <FaBook className="text-blue-500 text-3xl mr-2" />
           <h2 className="text-3xl font-bold text-blue-500 dark:text-blue-400">
@@ -40,7 +39,6 @@ export default function AddVocabularyForm() {
           </h2>
         </div>
 
-        {/* Word Input */}
         <div className="relative mb-6">
           <input
             type="text"
@@ -53,7 +51,6 @@ export default function AddVocabularyForm() {
           />
         </div>
 
-        {/* Definition Input */}
         <div className="relative mb-6">
           <textarea
             id="definition"
@@ -66,7 +63,6 @@ export default function AddVocabularyForm() {
           ></textarea>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring focus:ring-blue-300"
